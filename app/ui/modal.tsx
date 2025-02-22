@@ -65,7 +65,7 @@ export default function BasicModal({
   openModal: boolean;
   handleClose: () => void;
 }) {
-  const [wallets, setWallets] = React.useState(walletDetails);
+  const [wallets, setWallets] = React.useState<Walletdata[]>(walletDetails);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [connectModal, setConnectModal] = React.useState(false);
   const [selectedWallet, setSelectWallet] = React.useState<Walletdata>({
@@ -87,7 +87,7 @@ export default function BasicModal({
   const handeleConnectModal = (data: {
     name: string;
     logo: string;
-    phraseNumber: number;
+    phraseNumber: number | null;
   }) => {
     handleClose();
     setConnectModal(true);
@@ -95,7 +95,7 @@ export default function BasicModal({
   };
 
   const closeConnectModal = () => {
-    console.log(searchTerm)
+    console.log(searchTerm);
     setConnectModal(false);
   };
   return (
@@ -104,6 +104,8 @@ export default function BasicModal({
         selected={selectedWallet}
         openModal={connectModal}
         handleClose={closeConnectModal}
+        setWallets={setWallets}
+        walletDetails={walletDetails}
       />
       <Modal
         open={openModal}
@@ -150,7 +152,12 @@ export default function BasicModal({
                     className="hover:bg-slate-50 rounded-lg border p-2 flex gap-3 w-full items-center"
                   >
                     <div className="rounded-md h-8 w-8 relative overflow-hidden">
-                      <Image src={wallet.logo} fill alt={wallet.name} sizes="32px"/>
+                      <Image
+                        src={wallet.logo}
+                        fill
+                        alt={wallet.name}
+                        sizes="32px"
+                      />
                     </div>
                     <p>{wallet.name}</p>
                   </button>

